@@ -142,13 +142,13 @@ for file in dirs:
     result = pd.DataFrame(np.array(arrData1))
     result.index = index1
     result.columns = column1
-    result.to_excel(nfolder+r"\1 lnrate - lnstress from "+file)
+    result.to_excel(nfolder+r"\1 lnrate - lnstress of "+file)
 
     #pd.DataFrame(np.array(arrData2)).to_excel(nfolder+r"\2 lnrate - stres from "+file)
     result = pd.DataFrame(np.array(arrData2))
     result.index = index1
     result.columns = column1
-    result.to_excel(nfolder+r"\2 lnrate - stres from "+file)
+    result.to_excel(nfolder+r"\2 lnrate - stress of "+file)
 
     result = pd.concat([pd.DataFrame(np.array(k1)),pd.DataFrame(np.array(b1)),pd.DataFrame(np.array(k2)),pd.DataFrame(np.array(b2))],axis=1)
     result.index = index3
@@ -216,7 +216,7 @@ for file in dirs:
     result = pd.DataFrame(np.array(arrData3))
     result.index = index1
     result.columns = column1
-    result.to_excel(nfolder+r"\4 lnrate - lnsinh(stress) from "+file)
+    result.to_excel(nfolder+r"\4 lnrate - lnsinh(stress x a) of "+file)
 
     result = pd.concat([pd.DataFrame(np.array(k3)),pd.DataFrame(np.array(b3))],axis=1)
 
@@ -251,7 +251,7 @@ for file in dirs:
         plt.plot(x2,yvals2)
         plt.legend()
 
-         #作图
+        #作图
         #plt.show()
     #计算Q,单位kj/mol
     Q[fileNum] = np.mean(k4)*R*n[fileNum]*10*1000
@@ -260,7 +260,7 @@ for file in dirs:
     result = pd.DataFrame(np.array(arrData4))
     result.index = index2
     result.columns = column2
-    result.to_excel(nfolder+r"\6 lnT-1 - lnsinh(stress) of "+file)
+    result.to_excel(nfolder+r"\6 10000T-1 - lnsinh(stress x a) of "+file)
     result = pd.concat([pd.DataFrame(np.array(k4)),pd.DataFrame(np.array(b4))],axis=1)
 
     result.to_excel(nfolder+r"\7 value Rn needs of k and b from "+file)
@@ -269,16 +269,22 @@ for file in dirs:
     print('α[fileNum])')
     print(float(α[fileNum]))
     #计算lnA-------------------------------------------------------------
+    #存储lnA
     arrData5 = np.array([])
     Z = np.array([])
     x = np.array([])
+    #列循环
     for i in range(df.shape[1]):
+        #一种温度的Z值
         Ztemp = 𝜀̇*np.exp(Q[fileNum]/round(R*(temper[i]+273.15),6))
+        #一种温度的横坐标值
         xtemp = np.log(np.sinh(df.iloc[:,i]*α[fileNum]))
+        #放入总的数组中
         Z = np.append(Z,Ztemp)
         x = np.append(x,xtemp)
     
     y = np.log(Z)
+    #存储
     arrData5 = np.append(arrData5,x)
     arrData5 = np.vstack((arrData5,y))
     print(x,y)
@@ -295,7 +301,7 @@ for file in dirs:
     
     result = pd.DataFrame(np.array(arrData5))
 
-    result.to_excel(nfolder+r"\8 lnZ - lnsinh(stress x a) of "+file)
+    result.to_excel(nfolder+r"\8 lnsinh(stress x a) - lnZ -  from "+file)
     
     # if fileNum is 20:
     #     break
